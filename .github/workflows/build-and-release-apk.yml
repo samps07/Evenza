@@ -61,7 +61,7 @@ jobs:
       - name: Build Debug APK
         run: gradle assembleDebug --no-daemon --stacktrace
 
-      - name: Prepare APK Asset
+      - name: Prepare APK Asset & Release Tag
         id: prepare_apk
         run: |
           APK_PATH=$(find app/build/outputs/apk/debug -name "*.apk" | head -n 1)
@@ -69,38 +69,49 @@ jobs:
             echo "Error: APK file not found!"
             exit 1
           fi
-          OUTPUT_APK="app/build/outputs/apk/debug/Evenza-Counter-debug.apk"
-          if [ "$APK_PATH" != "$OUTPUT_APK" ]; then
-            cp "$APK_PATH" "$OUTPUT_APK"
+
+          # Extract version from app/build.gradle.kts
+          APP_VERSION=$(grep -o 'versionName = "[^"]*"' app/build.gradle.kts | head -n 1 | cut -d '"' -f 2)
+          if [ -z "$APP_VERSION" ]; then
+            APP_VERSION="1.0"
           fi
+
+          OUTPUT_APK="app/build/outputs/apk/debug/Evenza-v${APP_VERSION}-debug.apk"
+          cp "$APK_PATH" "$OUTPUT_APK"
+          
+          # Tag format requested: Evenza and its version number (e.g. Evenza-v1.0)
+          TAG_NAME="Evenza-v${APP_VERSION}"
+          RELEASE_TITLE="Evenza v${APP_VERSION}"
+
           echo "apk_path=$OUTPUT_APK" >> $GITHUB_OUTPUT
-          DATE_TAG="v$(date +'%Y.%m.%d-%H%M')"
-          echo "date_tag=$DATE_TAG" >> $GITHUB_OUTPUT
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "release_title=$RELEASE_TITLE" >> $GITHUB_OUTPUT
+          echo "app_version=$APP_VERSION" >> $GITHUB_OUTPUT
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Evenza-Counter-debug-apk
+          name: Evenza-debug-apk
           path: ${{ steps.prepare_apk.outputs.apk_path }}
           retention-days: 90
 
       - name: Create or Update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: latest
-          name: "Latest Android APK Build"
+          tag_name: ${{ steps.prepare_apk.outputs.tag_name }}
+          name: ${{ steps.prepare_apk.outputs.release_title }}
           body: |
-            ### 📱 Evenza Counter - Latest APK Release
+            ### 📱 Evenza v${{ steps.prepare_apk.outputs.app_version }} - APK Release
 
-            An automated Android build was triggered by a code commit.
+            Automated Android release build for Evenza.
 
-            - **File**: `Evenza-Counter-debug.apk`
+            - **Release**: `${{ steps.prepare_apk.outputs.release_title }}`
+            - **Tag**: `${{ steps.prepare_apk.outputs.tag_name }}`
             - **Commit**: `${{ github.sha }}`
             - **Branch**: `${{ github.ref_name }}`
-            - **Build Date**: `${{ steps.prepare_apk.outputs.date_tag }}`
 
             #### 📥 How to Install:
-            1. Download the `Evenza-Counter-debug.apk` file attached below directly onto your Android phone.
+            1. Download the `Evenza-v${{ steps.prepare_apk.outputs.app_version }}-debug.apk` file attached below directly onto your Android phone.
             2. Open the downloaded `.apk` file and tap **Install**.
             3. If prompted, allow installations from your browser/file manager.
           draft: false

@@ -9,8 +9,10 @@ This repository is configured with an automated **GitHub Actions CI/CD pipeline*
 1. Whenever code is pushed to your GitHub repository (via **Push to GitHub** in Google AI Studio or regular `git push`), GitHub automatically triggers the workflow.
 2. The workflow:
    - Sets up **JDK 21** and **Gradle 9.3.1**.
+   - Automatically extracts your app version from `app/build.gradle.kts` (e.g. `1.0`).
    - Compiles the universal debug Android APK (`gradle assembleDebug`).
-   - Automatically attaches the compiled `Evenza-Counter-debug.apk` directly to **GitHub Releases** under the `latest` tag.
+   - Generates the tag **`Evenza-v<version>`** (e.g. `Evenza-v1.0`) and title **`Evenza v<version>`**.
+   - Automatically publishes the compiled **`Evenza-v<version>-debug.apk`** directly to **GitHub Releases**.
    - Also archives the APK under the **Actions** tab artifacts.
 
 ---
@@ -20,7 +22,7 @@ This repository is configured with an automated **GitHub Actions CI/CD pipeline*
 ### Option A: From GitHub Releases (Easiest)
 1. On your phone or computer, open your GitHub repository page.
 2. Navigate to **Releases** on the right sidebar (or go to `https://github.com/<your-username>/<your-repo>/releases`).
-3. Under the **Latest Android APK Build** release, tap or click **`Evenza-Counter-debug.apk`** under the **Assets** section.
+3. Under the release (e.g. **`Evenza v1.0`** with tag **`Evenza-v1.0`**), tap or click **`Evenza-v<version>-debug.apk`** under the **Assets** section.
 4. Open the downloaded file on your phone and tap **Install**.
    *(If prompted, toggle on "Allow from this source" in Android settings).*
 
