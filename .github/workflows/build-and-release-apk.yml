@@ -44,6 +44,20 @@ jobs:
             touch .env
           fi
 
+      - name: Generate Debug Keystore if missing
+        run: |
+          if [ ! -f debug.keystore ]; then
+            keytool -genkeypair -v \
+              -keystore debug.keystore \
+              -alias androiddebugkey \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -storepass android \
+              -keypass android \
+              -dname "CN=Android Debug,O=Android,C=US"
+          fi
+
       - name: Build Debug APK
         run: gradle assembleDebug --no-daemon --stacktrace
 
