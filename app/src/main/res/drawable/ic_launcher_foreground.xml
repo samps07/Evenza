@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Outer stopwatch / timer body arc -->
+    <path
+        android:pathData="M54,26 C40.2,26 29,37.2 29,51 C29,64.8 40.2,76 54,76 C67.8,76 79,64.8 79,51 C79,37.2 67.8,26 54,26 Z"
+        android:fillColor="#00000000"
+        android:strokeColor="#38BDF8"
+        android:strokeWidth="3.5"
+        android:strokeAlpha="0.4" />
+    <!-- Active countdown progress arc (3/4 circle) -->
+    <path
+        android:pathData="M54,26 C67.8,26 79,37.2 79,51 C79,64.8 67.8,76 54,76"
+        android:fillColor="#00000000"
+        android:strokeColor="#F43F5E"
+        android:strokeWidth="4"
+        android:strokeLineCap="round" />
+    <!-- Top button / crown of timer -->
+    <path
+        android:pathData="M50,20 L58,20"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M54,20 L54,24"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5" />
+    <!-- Clock hands pointing to impending deadline -->
+    <path
+        android:pathData="M54,51 L54,36"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M54,51 L64,57"
+        android:strokeColor="#F43F5E"
+        android:strokeWidth="3"
+        android:strokeLineCap="round" />
+    <!-- Central pivot point -->
+    <path
+        android:pathData="M54,51 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0"
+        android:fillColor="#FFFFFF" />
+    <!-- Horizontal seek-bar below timer -->
+    <!-- Background track -->
+    <path
+        android:pathData="M31,84 L77,84"
+        android:strokeColor="#FFFFFF"
+        android:strokeAlpha="0.25"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round" />
+    <!-- Elapsed bar -->
+    <path
+        android:pathData="M31,84 L60,84"
+        android:strokeColor="#FB923C"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round" />
+    <!-- Seek-bar circular scrubber handle -->
+    <path
+        android:pathData="M60,84 m-3.5,0 a3.5,3.5 0 1,0 7,0 a3.5,3.5 0 1,0 -7,0"
+        android:fillColor="#FFFFFF" />
+</vector>

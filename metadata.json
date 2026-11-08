@@ -1,0 +1,6 @@
+{
+  "name": "Evenza",
+  "description": "A stylish event countdown tracker with interactive home-screen widgets.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#121316"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Configure Counter Widget"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose what this widget should display on your home screen."
+        android:textColor="#94A3B8"
+        android:textSize="14sp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Category Filter"
+        android:textColor="#E2E8F0"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <Spinner
+        android:id="@+id/config_category_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#25282D"
+        android:padding="8dp"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sorting"
+        android:textColor="#E2E8F0"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <RadioGroup
+        android:id="@+id/config_sort_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp">
+
+        <RadioButton
+            android:id="@+id/config_sort_urgency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Automatic by urgency (closest first)"
+            android:textColor="#F1F5F9"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/config_sort_custom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Custom app order"
+            android:textColor="#F1F5F9" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/config_btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Add to Home Screen"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:backgroundTint="#6366F1"
+        android:textColor="#FFFFFF" />
+</LinearLayout>

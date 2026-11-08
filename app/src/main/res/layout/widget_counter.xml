@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/widget_background"
+    android:padding="12dp">
+
+    <!-- Header bar -->
+    <LinearLayout
+        android:id="@+id/widget_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/widget_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Counter"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.02" />
+
+        <TextView
+            android:id="@+id/widget_category_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:textColor="#94A3B8"
+            android:textSize="11sp"
+            android:layout_marginEnd="8dp" />
+
+        <ImageButton
+            android:id="@+id/widget_btn_refresh"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/widget_button_bg"
+            android:src="@drawable/ic_widget_refresh"
+            android:scaleType="centerInside"
+            android:layout_marginEnd="6dp"
+            android:contentDescription="@string/refresh_widget" />
+
+        <ImageButton
+            android:id="@+id/widget_btn_add"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/widget_button_bg"
+            android:src="@drawable/ic_widget_add"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/add_counter" />
+    </LinearLayout>
+
+    <!-- Content Area -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ListView
+            android:id="@+id/widget_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="6dp"
+            android:scrollbars="none" />
+
+        <LinearLayout
+            android:id="@+id/widget_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="16dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⏳"
+                android:textSize="28sp"
+                android:layout_marginBottom="6dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No counters yet"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tap + to add a counter"
+                android:textColor="#94A3B8"
+                android:textSize="11sp"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

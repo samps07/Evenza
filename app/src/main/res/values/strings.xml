@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Evenza</string>
+    <string name="widget_name">Evenza</string>
+    <string name="widget_description">Scrollable list of your countdown deadlines.</string>
+    <string name="add_counter">Add counter</string>
+    <string name="refresh_widget">Refresh widget</string>
+    <string name="no_counters">No counters yet</string>
+    <string name="tap_to_add">Tap + to add a counter</string>
+</resources>
