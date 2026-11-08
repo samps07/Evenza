@@ -297,9 +297,16 @@ fun ShareDialogScreen(
                 if (aiResult.expiryEpochMillis != null) {
                     targetTimeMillis = aiResult.expiryEpochMillis
                 }
-                if (aiResult.notes.isNotBlank() || aiResult.quantity.isNotBlank()) {
-                    val combinedNotes = listOf(aiResult.quantity, aiResult.notes).filter { it.isNotBlank() }.joinToString(" • ")
-                    description = if (description.isNotBlank()) "$description\n$combinedNotes" else combinedNotes
+                val combinedNotes = buildString {
+                    val baseNotes = listOf(aiResult.quantity, aiResult.notes).filter { it.isNotBlank() }.joinToString(" • ")
+                    if (baseNotes.isNotBlank()) append(baseNotes)
+                    if (aiResult.rawOcrText.isNotBlank()) {
+                        if (isNotEmpty()) append("\n\n")
+                        append("Extracted Text:\n${aiResult.rawOcrText}")
+                    }
+                }
+                if (combinedNotes.isNotBlank()) {
+                    description = if (description.isNotBlank()) "$description\n\n$combinedNotes" else combinedNotes
                 }
                 if (aiResult.category.isNotBlank() && categories.any { it.equals(aiResult.category, ignoreCase = true) }) {
                     category = categories.first { it.equals(aiResult.category, ignoreCase = true) }

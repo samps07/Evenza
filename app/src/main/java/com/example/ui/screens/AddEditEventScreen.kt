@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -127,7 +128,14 @@ fun AddEditEventScreen(
     var description by remember {
         mutableStateOf(
             editingEvent?.description ?: (
-                listOf(aiDraftResult?.quantity, aiDraftResult?.notes).filter { !it.isNullOrBlank() }.joinToString(" • ")
+                buildString {
+                    val mainNotes = listOf(aiDraftResult?.quantity, aiDraftResult?.notes).filter { !it.isNullOrBlank() }.joinToString(" • ")
+                    if (mainNotes.isNotBlank()) append(mainNotes)
+                    if (!aiDraftResult?.rawOcrText.isNullOrBlank()) {
+                        if (isNotEmpty()) append("\n\n")
+                        append("Extracted Text:\n${aiDraftResult?.rawOcrText}")
+                    }
+                }
             )
         )
     }
@@ -803,6 +811,13 @@ fun AddEditEventScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
+                    val hasAiOcrText = remember(aiDraftResult?.rawOcrText) {
+                        !aiDraftResult?.rawOcrText.isNullOrBlank()
+                    }
+                    var extractedTextValue by remember(aiDraftResult?.rawOcrText) {
+                        mutableStateOf(aiDraftResult?.rawOcrText ?: "")
+                    }
+
                     Text(
                         text = "DESCRIPTION (OPTIONAL)",
                         style = MaterialTheme.typography.labelSmall.copy(
@@ -816,7 +831,7 @@ fun AddEditEventScreen(
                         value = description,
                         onValueChange = { description = it },
                         placeholder = { Text("Details or notes about this deadline") },
-                        maxLines = 3,
+                        maxLines = 6,
                         shape = RoundedCornerShape(14.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = Color(0xFF2563EB),
@@ -826,6 +841,107 @@ fun AddEditEventScreen(
                         ),
                         modifier = Modifier.fillMaxWidth()
                     )
+
+                    // Extracted Text field from AI analysis
+                    if (hasAiOcrText) {
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        Surface(
+                            shape = RoundedCornerShape(14.dp),
+                            color = if (isDark) Color(0xFF1F242D) else Color(0xFFEFF6FF),
+                            border = BorderStroke(1.dp, if (isDark) Color(0xFF2B384E) else Color(0xFFBFDBFE)),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Column(modifier = Modifier.padding(12.dp)) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Icon(
+                                            imageVector = Icons.Default.AutoAwesome,
+                                            contentDescription = null,
+                                            tint = Color(0xFF2563EB),
+                                            modifier = Modifier.size(16.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(6.dp))
+                                        Text(
+                                            text = "EXTRACTED TEXT (IMAGE OCR)",
+                                            style = MaterialTheme.typography.labelSmall.copy(
+                                                fontWeight = FontWeight.Bold,
+                                                letterSpacing = 0.5.sp
+                                            ),
+                                            color = Color(0xFF2563EB)
+                                        )
+                                    }
+
+                                    TextButton(
+                                        onClick = {
+                                            if (extractedTextValue.isNotBlank()) {
+                                                val marker = "Extracted Text:\n"
+                                                val updatedDesc = if (description.contains(marker)) {
+                                                    description.substringBefore(marker).trimEnd() + "\n\n" + marker + extractedTextValue
+                                                } else if (description.isNotBlank()) {
+                                                    description.trimEnd() + "\n\n" + marker + extractedTextValue
+                                                } else {
+                                                    marker + extractedTextValue
+                                                }
+                                                description = updatedDesc.trim()
+                                            }
+                                        },
+                                        contentPadding = PaddingValues(horizontal = 6.dp, vertical = 2.dp),
+                                        modifier = Modifier.height(28.dp)
+                                    ) {
+                                        Text(
+                                            text = "Sync to Description",
+                                            fontSize = 11.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color(0xFF2563EB)
+                                        )
+                                    }
+                                }
+
+                                Text(
+                                    text = "Raw text detected on the product photo. Saved automatically inside description to preserve any details AI missed.",
+                                    style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
+                                    color = if (isDark) Color(0xFF94A3B8) else Color(0xFF475569),
+                                    modifier = Modifier.padding(vertical = 4.dp)
+                                )
+
+                                OutlinedTextField(
+                                    value = extractedTextValue,
+                                    onValueChange = { newText ->
+                                        extractedTextValue = newText
+                                        val marker = "Extracted Text:\n"
+                                        val updatedDesc = if (description.contains(marker)) {
+                                            description.substringBefore(marker).trimEnd() + "\n\n" + marker + newText
+                                        } else if (description.isNotBlank()) {
+                                            description.trimEnd() + "\n\n" + marker + newText
+                                        } else {
+                                            marker + newText
+                                        }
+                                        description = updatedDesc.trim()
+                                    },
+                                    placeholder = { Text("Extracted text from image") },
+                                    maxLines = 6,
+                                    shape = RoundedCornerShape(10.dp),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        focusedBorderColor = Color(0xFF2563EB),
+                                        unfocusedBorderColor = if (isDark) Color(0xFF334155) else Color(0xFFCBD5E1),
+                                        focusedContainerColor = if (isDark) Color(0xFF141A23) else Color(0xFFFFFFFF),
+                                        unfocusedContainerColor = if (isDark) Color(0xFF141A23) else Color(0xFFFFFFFF)
+                                    ),
+                                    textStyle = MaterialTheme.typography.bodySmall.copy(
+                                        fontFamily = FontFamily.Monospace,
+                                        fontSize = 11.sp,
+                                        lineHeight = 15.sp
+                                    ),
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                            }
+                        }
+                    }
                 }
             }
 

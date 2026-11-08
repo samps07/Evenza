@@ -536,7 +536,11 @@ class CounterViewModel(application: Application) : AndroidViewModel(application)
             if (result.manufacturingDate.isNotBlank()) append("MFG Date: ${result.manufacturingDate}\n")
             if (result.notes.isNotBlank()) append("Notes: ${result.notes}\n")
             if (result.needsVerification && result.verificationReason.isNotBlank()) {
-                append("\n[AI Note: ${result.verificationReason}]")
+                append("\n[AI Note: ${result.verificationReason}]\n")
+            }
+            if (result.rawOcrText.isNotBlank()) {
+                if (isNotEmpty()) append("\n")
+                append("Extracted Text:\n${result.rawOcrText}")
             }
         }.trim()
 
