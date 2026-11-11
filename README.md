@@ -12,6 +12,8 @@
 ---
 
 ## 🌟 Overview
+<img width="956" height="1280" alt="6310009022228142123" src="https://github.com/user-attachments/assets/ec5aa763-4eda-48df-83ce-824bf724b41e" />
+
 
 **Evenza** is a modern, high-precision event countdown and expiry management application designed for Android. Combining **Material 3 Bento-style interfaces**, **on-device Google ML Kit OCR**, and **LLM label intelligence**, Evenza eliminates guesswork around perishable goods, medication schedules, warranty expirations, and life milestones.
 
